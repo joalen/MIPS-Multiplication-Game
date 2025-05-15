@@ -19,6 +19,7 @@ Phew! You got that out of the way, so let’s begin playing this game :D
 2. Click either this icon <img width="50" alt="image" src="https://github.com/user-attachments/assets/700fa11c-0dc6-48ff-9743-e48cf0f06d52" />, go to Run > Assemble, or you can press F3 on your keyboard
 3. In the console, you’ll see something like this...
 <img width="507" alt="image" src="https://github.com/user-attachments/assets/e4e76979-f946-4acb-bea4-716434aadc5b" />
+
 4. Now click this icon or <img width="79" alt="image" src="https://github.com/user-attachments/assets/719a7634-0072-43b5-a5bb-663329c80363" />, go to Run > Go, or you can press F
 5. Now, you’ll see an empty game board like this, which means you got it to work!!
 
