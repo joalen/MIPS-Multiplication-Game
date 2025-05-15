@@ -4,6 +4,9 @@
 
 1. Make sure you have your sound on! I do play sounds, although terribly made, so you might want to make sure you set the right volume. In MIPS, I hardcoded to 75% volume so don’t put your speakers on full blast
 2. Make sure that for Bitmap Display (Tools > Bitmap Display) that you invoke the following settings ( **failure to do so will cause your board to be corrupted!)** :
+
+<img width="746" alt="image" src="https://github.com/user-attachments/assets/102ce3a1-61d2-4f9d-af3c-d70ac5e0e22a" />
+
 3. Make sure that you press **Connect to MIPS**
     a. Failure to do so will result in nothing be drawn to the screen
 4. Then, make sure you **open the file at main.asm** ; never open the files for the other modules since these are not runnable and will cause errors to be thrown to console...
@@ -13,20 +16,25 @@
 Phew! You got that out of the way, so let’s begin playing this game :D
 
 1. Make sure that you open up main.asm (or File > Open > <directory of where you extracted the ZIP> and click on main.asm)
-2. Click either this icon , go to Run > Assemble, or you can press F3 on your keyboard
-
-
+2. Click either this icon <img width="50" alt="image" src="https://github.com/user-attachments/assets/700fa11c-0dc6-48ff-9743-e48cf0f06d52" />, go to Run > Assemble, or you can press F3 on your keyboard
 3. In the console, you’ll see something like this...
-4. Now click this icon or , go to Run > Go, or you can press F
+<img width="507" alt="image" src="https://github.com/user-attachments/assets/e4e76979-f946-4acb-bea4-716434aadc5b" />
+4. Now click this icon or <img width="79" alt="image" src="https://github.com/user-attachments/assets/719a7634-0072-43b5-a5bb-663329c80363" />, go to Run > Go, or you can press F
 5. Now, you’ll see an empty game board like this, which means you got it to work!!
+
+<img width="815" alt="image" src="https://github.com/user-attachments/assets/e9349d78-54cb-4056-8c41-d27ef46b28ad" />
+
 6. Now, select your integer from 1-9 and let the game begin
     a. Of course, if you pick a 0 or a 10, this will prompt you to try again
+
+<img width="750" alt="image" src="https://github.com/user-attachments/assets/fcd4dbcb-ed20-4d53-87e4-e6fbc2ef6030" />
+
 7. You’ll notice that the program momentarily pauses and plays noise...that’s expected and once the noise finishes, then the game will print out status messages indicating you’ve either...
        a. Won the game!
        b. Better Luck Next Time!
        c. A draw (rarely happens but you can make it work by just typing 1-9 relentlessly)
 8. Want to play again...
-    a. Press the , go to Run > Reset, or press F12 on your keyboard
+    a. Press the <img width="51" alt="image" src="https://github.com/user-attachments/assets/75eea8ed-4855-491e-b89d-c6504b83ce08" />, go to Run > Reset, or press F12 on your keyboard
     b. Make sure in the Bitmap Display, you press “Reset” because otherwise, it will draw over the screen and that will look wonky!!
     c. Then, repeat from step #3 onwards until you’ve been bored and are done playing
 
@@ -110,6 +118,8 @@ columns, which will draw our border-box!
 
 The result of the above
 
+<img width="622" alt="image" src="https://github.com/user-attachments/assets/eee79ef6-4f28-4799-bcd7-f6e3d3d9c9bd" />
+
 ### Draw Integer
 
 Awesome! We got a box and now we want a digit in the box like the game showed. Therefore, I created a drawDigit function that essentially works like this...
@@ -163,6 +173,8 @@ ii. Y position will be the base address y + the row
 
 This is the end result of that + the draw box
 
+<img width="620" alt="image" src="https://github.com/user-attachments/assets/0d3f2b3d-91fe-4959-9c15-4384e3ca6ded" />
+
 ### Fill-in box
 
 Okay, now like in the game, we need to mark the boxes we’ve seen (and the computer sees) to clearly indicate to the user that the box is used and is an illegal move to play. This works generally as a normal 2D array traversal function as opposed to drawing a bordered box – which required doing only the first and last rows/columns
@@ -182,13 +194,15 @@ Of course, then I had to make another procedure to draw the grid based on the in
 
 Here’s a visual to help you understand...
 
+<img width="527" alt="image" src="https://github.com/user-attachments/assets/44cd6028-addd-43cb-905b-45d01f74b462" />
+
 
 Now, if you create the generateBoard functionality based on what the heap map looks like, then it will turn out to be like this!
 
-_You might also be wondering why I started to use the base address as static data as opposed to
-the previous $gp? Well, I ran into issues with $gp corrupting my run I/O in MIPS and showing
-unicode characters. Therefore, I went back to some of the resources I used and found out that
-most Bitmap generations will just borrow the static data base address and we leave the others
+<img width="625" alt="image" src="https://github.com/user-attachments/assets/ac6953e7-401a-4827-881a-c8a7aeb1f55f" />
+
+_You might also be wondering why I started to use the base address as static data as opposed to the previous $gp? Well, I ran into issues with $gp corrupting my run I/O in MIPS and showing
+unicode characters. Therefore, I went back to some of the resources I used and found out that most Bitmap generations will just borrow the static data base address and we leave the others
 alone_
 
 Video that helped with the $gp issue: https://www.youtube.com/watch?v=CdctMQjk3JI
