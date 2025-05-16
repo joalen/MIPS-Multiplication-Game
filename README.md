@@ -99,20 +99,14 @@ Initially, I wanted to get the box drawn on the screen and my approach to doing 
 1. For sure use the stack to store our values so that we can bring it on back to the main
     function .text
        a. Allocate 5 spots in the stack (so -20)
-       b. Then store the following: return address (so we can return back to the main
-          program – don’t want an infinite loop!), x and y positions on our bitmap screen,
-          then the color we’d like our box to be (from the URL above which is web HEX
-          HTML specification), and then the size of our box.
-       c. Move my arguments – x, y, color, and size into the stack registers → from there
-          we do this math to calculate the appropriate address
+       b. Then store the following: return address (so we can return back to the main program – don’t want an infinite loop!), x and y positions on our bitmap screen, then the color we’d like our box to be (from the URL above which is web HEX HTML specification), and then the size of our box.
+       c. Move my arguments – x, y, color, and size into the stack registers → from there we do this math to calculate the appropriate address
              i. y_pos * display_width → new y-position
-ii. x_pos + (i) → pixel position
-iii. (ii) * 4 → addend to the global pointer
-iv. $gp + (iii) → new base address to invoke in the Bitmap display that acts
-as the next position after draw
-d. Then, we do our loop logic to draw this box, which reminds me of a 2D array
-i. Start with our iteration for the row at 0 and then iterate through the
-columns, which will draw our border-box!
+             ii. x_pos + (i) → pixel position
+             iii. (ii) * 4 → addend to the global pointer
+             iv. $gp + (iii) → new base address to invoke in the Bitmap display that acts as the next position after draw
+       d. Then, we do our loop logic to draw this box, which reminds me of a 2D array
+             i. Start with our iteration for the row at 0 and then iterate through the columns, which will draw our border-box!
 
 1. This is important because I don’t want the box filled in just yet and need to make sure I get the four corners and that the first and last rows/columns are the only one’s filled
        a. How do I prevent filling in the other pixels? I invoke a pixelskip function that moves to the next pixel and moves to the next column by +1, which will return back unconditionally to the loop column function
@@ -125,50 +119,34 @@ The result of the above
 
 Awesome! We got a box and now we want a digit in the box like the game showed. Therefore, I created a drawDigit function that essentially works like this...
 
-1. Invoke all the curvature bits so that we can “draw” the digits on the screen (this step was
-    perhaps frustrating because I had to modify each of these bytes one at a time until I got
-    the proper numbers, which finally worked out – although they aren’t perfect)
+1. Invoke all the curvature bits so that we can “draw” the digits on the screen (this step was perhaps frustrating because I had to modify each of these bytes one at a time until I got the proper numbers, which finally worked out – although they aren’t perfect)
 ```
-digit0:. **byte** 0x3E, 0x41, 0x41, 0x41, 0x41, 0x41, 0x3E # these are
-all the pixels that represent 0
-digit1:. **byte** 0x08, 0x18, 0x28, 0x08, 0x08, 0x08, 0x3E # these are
-all the pixels that represent 1
-digit2:. **byte** 0x3E, 0x41, 0x01, 0x02, 0x04, 0x10, 0x7F # these are
-all the pixels that represent 2
-digit3:. **byte** 0x3E, 0x41, 0x01, 0x0E, 0x01, 0x41, 0x3E # these are
-all the pixels that represent 3
-digit4:. **byte** 0x02, 0x06, 0x0A, 0x12, 0x7F, 0x02, 0x02 # these are
-all the pixels that represent 4
-digit5:. **byte** 0x7F, 0x40, 0x40, 0x7E, 0x01, 0x41, 0x3E # these are
-all the pixels that represent 5
-digit6:. **byte** 0x1E, 0x20, 0x40, 0x7E, 0x41, 0x41, 0x3E # these are
-all the pixels that represent 6
-digit7:. **byte** 0x7F, 0x01, 0x02, 0x04, 0x08, 0x10, 0x10 # these are
-all the pixels that represent 7
-digit8:. **byte** 0x3E, 0x41, 0x41, 0x3E, 0x41, 0x41, 0x3E # these are
-all the pixels that represent 8
-digit9:. **byte** 0x3E, 0x41, 0x41, 0x3F, 0x01, 0x02, 0x3C # these are
-all the pixels that represent 9
+digit0: .byte 0x3E, 0x41, 0x41, 0x41, 0x41, 0x41, 0x3E # these are all the pixels that represent 0
+digit1: .byte 0x08, 0x18, 0x28, 0x08, 0x08, 0x08, 0x3E # these are all the pixels that represent 1
+digit2: .byte 0x3E, 0x41, 0x01, 0x02, 0x04, 0x10, 0x7F # these are all the pixels that represent 2
+digit3: .byte 0x3E, 0x41, 0x01, 0x0E, 0x01, 0x41, 0x3E # these are all the pixels that represent 3
+digit4: .byte 0x02, 0x06, 0x0A, 0x12, 0x7F, 0x02, 0x02 # these are all the pixels that represent 4
+digit5: .byte 0x7F, 0x40, 0x40, 0x7E, 0x01, 0x41, 0x3E # these are all the pixels that represent 5
+digit6: .byte 0x1E, 0x20, 0x40, 0x7E, 0x41, 0x41, 0x3E # these are all the pixels that represent 6
+digit7: .byte 0x7F, 0x01, 0x02, 0x04, 0x08, 0x10, 0x10 # these are all the pixels that represent 7
+digit8: .byte 0x3E, 0x41, 0x41, 0x3E, 0x41, 0x41, 0x3E # these are all the pixels that represent 8
+digit9: .byte 0x3E, 0x41, 0x41, 0x3F, 0x01, 0x02, 0x3C # these are all the pixels that represent 9
 ```
 
 2. Like the drawBox, we need five spaces in the stack (so 20 once again to move the stack pointer) and from there we calculate the base address to load into our global pointer
        a. This would again start with digit 0 and then from there, we multiply * 7 bytes to create our offset for this digit to properly bound to the box
        b. Then, we invoke our 2D array logic → loop the row and loop the column (like mentioned when I did the drawBox logic)
              i. However, with this, I made newer logic due to how we have those bytes that represent the “curves” of each of the numbers – my inspiration was for a “bit-game” like font
-
-ii. In the digit_row_loop function, it’s essentially loading in the byte and initializing our column counter to proceed with drawing the number
-iii. In the digit_col_loop, now we are able to draw the number
-1. We do this by making sure we initiate 7 bits (cause I allocated all
-seven bits of the curve of these numbers)
-2. Then, we reverse the bit position (so we can make it a
-seven-column bit)
-3. Then we variable shift logic rightwards of our reversed bit position
-4. From our lecture on what binary AND does, I can mask bits so that
-I can fill in parts of the curve of the integer
-5. This is where I can then safely assume that a zero bit is a pixel skip
+             ii. In the digit_row_loop function, it’s essentially loading in the byte and initializing our column counter to proceed with drawing the number
+             iii. In the digit_col_loop, now we are able to draw the number
+3. We do this by making sure we initiate 7 bits (cause I allocated all seven bits of the curve of these numbers)
+4. Then, we reverse the bit position (so we can make it a seven-column bit)
+5. Then we variable shift logic rightwards of our reversed bit position
+6. From our lecture on what binary AND does, I can mask bits so that I can fill in parts of the curve of the integer
+7. This is where I can then safely assume that a zero bit is a pixel skip
        c. We need to calculate the x,y position of where we are in drawing our integer (this is what allows us to “traverse” the curve of these integers)...
              i. X position will be the base address x + the column
-ii. Y position will be the base address y + the row
+             ii. Y position will be the base address y + the row
        d. Then, it’s back to creating our base address to append to, which refers back to how the draw box worked!
 
 
@@ -207,7 +185,7 @@ unicode characters. Therefore, I went back to some of the resources I used and f
 alone_
 
 Video that helped with the $gp issue: https://www.youtube.com/watch?v=CdctMQjk3JI
-● I had the bright idea to use the keyboard from that video to let the user easily input the numbers, but that required knowing how to add interrupts to the program (next lecture may teach us that??) and that would defeat the purpose of move validation so my original approach suffices for now
+- I had the bright idea to use the keyboard from that video to let the user easily input the numbers, but that required knowing how to add interrupts to the program (next lecture may teach us that??) and that would defeat the purpose of move validation so my original approach suffices for now
 
 ## Board Generation
 
@@ -258,10 +236,10 @@ General steps I took to make the findCPUMove algo:
 ## The Sound Generation
 
 Sound generation, surprisingly, was the easiest component of this project compared to even the graphics or the actual game itself. Therefore, these were some of the resources I stumbled upon as I looked for ways to emulate noise in the MARS simulator:
-● https://stackoverflow.com/questions/19754324/mips-playing-beep-sound
-● https://github.com/dylanmtaylor/mars-audio/blob/master/AudioPlay.asm
-● https://github.com/TheCodeOfLife/Midi-in-Mips/blob/master/Midi-in-Mips.asm
-● https://weinman.cs.grinnell.edu/courses/CSC211/2020F/labs/mips-basics/
+- https://stackoverflow.com/questions/19754324/mips-playing-beep-sound
+- https://github.com/dylanmtaylor/mars-audio/blob/master/AudioPlay.asm
+- https://github.com/TheCodeOfLife/Midi-in-Mips/blob/master/Midi-in-Mips.asm
+- https://weinman.cs.grinnell.edu/courses/CSC211/2020F/labs/mips-basics/
 
 The general rundown of sound generation:
 1. First, you define the MIDI version 1.0 specification of “note numbers” that correspond to what I believe are piano keys on a piano keyboard and those plays the noises for each of the notes → almost like those 8-bit arcade noise machines
@@ -272,6 +250,7 @@ The general rundown of sound generation:
 4. Best website for MIDI extraction? → https://samplab.com/audio-to-midi (this will give you a .mid file that you can download to your machine)
 5. Then, I found an article by Twillo that described how you can use Python to extract MIDI information (and to that, that’s a file parser, which is easy to understand and create a short script for). Learn more here: https://www.twilio.com/en-us/blog/working-with-midi-data-in-python-using-mido
 6. From there, all I had to do was open up the Python interpreter and run each of these Python lines individually. Of course, you could make a Python file and run it, but for any “scratchwork” I use the python shell for just easy testing
+
 ```
 **>>>** mid = mido.MidiFile("/Users/alenjo/Downloads/drawGameSound_Skribb.mid")
 **>>> for** i, track **in** enumerate(mid.tracks):
